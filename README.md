@@ -1,6 +1,6 @@
 ﻿# TRON 自动归集系统（私有化）
 
-Telegram：@xzpq66    @Telegram频道：https://t.me/NLGH999 
+Telegram：https://t.me/xzpq66  Telegram频道：https://t.me/NLGH999 
 
 这是一个可本地部署的 TRON 托管钱包归集系统，支持：
 
