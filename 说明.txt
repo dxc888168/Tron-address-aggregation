@@ -1,0 +1,2 @@
+cd C:\Users\dxc88\Desktop\自动归集脚本\backend
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 0.0.0.0 --port 8000

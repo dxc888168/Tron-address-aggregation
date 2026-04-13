@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: tron_collector_postgres
+    environment:
+      POSTGRES_DB: tron_collector
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    container_name: tron_collector_redis
+    ports:
+      - "6379:6379"
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: tron_collector_api
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8000:8000"
+
+  worker:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: tron_collector_worker
+    command: ["python", "-m", "app.worker"]
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+
+volumes:
+  pgdata:

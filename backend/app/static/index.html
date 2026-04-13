@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRON &#33258;&#21160;&#24402;&#38598;&#31649;&#29702;&#21488;</title>
+  <link rel="stylesheet" href="/static/styles.css?v=20260413-note-v26" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand-block">
+      <h1>TRON &#33258;&#21160;&#24402;&#38598;&#31649;&#29702;&#21488;</h1>
+      <p class="header-note">&#25903;&#25345;&#26029;&#32593;&#22330;&#26223;&#19979;&#30340;&#22320;&#22336;&#29983;&#25104;&#19982;&#26412;&#22320;&#31649;&#29702;&#65307;&#24402;&#38598;&#19982;&#20313;&#39069;&#21516;&#27493;&#38656;&#32852;&#32593;&#35775;&#38382;&#27874;&#22330;&#33410;&#28857;&#12290;</p>
+    </div>
+    <div id="user-bar" class="status-badge">&#26412;&#22320;&#27169;&#24335;&#65288;&#20813;&#30331;&#24405;&#65289;</div>
+  </header>
+
+  <main>
+    <section id="app-panel">
+      <div class="grid">
+        <section class="card wide" id="sweep-card">
+          <h2>&#19968;&#38190;&#24402;&#38598;</h2>
+          <form id="sweep-form">
+            <label>&#24402;&#38598;&#30446;&#26631;&#22320;&#22336; <input id="target-address" placeholder="T..." required /></label>
+            <label>&#20445;&#30041; TRX
+              <input id="reserve-trx" type="number" min="0" step="0.000001" value="0" />
+            </label>
+            <label>&#20445;&#30041; USDT
+              <input id="reserve-usdt" type="number" min="0" step="0.000001" value="0" />
+            </label>
+            <div class="row toolbar">
+              <button type="button" id="sweep-usdt-btn">&#19968;&#38190;&#24402;&#38598; USDT</button>
+              <button type="button" id="sweep-trx-btn">&#19968;&#38190;&#24402;&#38598; TRX</button>
+              <button type="button" id="refresh-jobs-btn">&#21047;&#26032;&#20219;&#21153;</button>
+              <button type="button" id="clear-jobs-btn">&#28165;&#31354;&#21382;&#21490;&#20219;&#21153;</button>
+            </div>
+          </form>
+          <pre id="sweep-run-result" class="log-output" data-log-title="&#24402;&#38598;&#26085;&#24535;"></pre>
+
+          <h2 class="card-subtitle">&#24402;&#38598;&#20219;&#21153;</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>&#20219;&#21153;&#21495;</th>
+                  <th>&#29366;&#24577;</th>
+                  <th>&#35745;&#21010;&#25968;</th>
+                  <th>&#25104;&#21151;</th>
+                  <th>&#22833;&#36133;</th>
+                  <th>&#38169;&#35823;</th>
+                  <th>&#21019;&#24314;&#26102;&#38388;</th>
+                </tr>
+              </thead>
+              <tbody id="jobs-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>&#36164;&#20135;&#24635;&#35272;</h2>
+          <div id="overview"></div>
+          <div class="row toolbar">
+            <button id="sync-assets-btn">&#21516;&#27493;&#20313;&#39069;</button>
+            <button id="refresh-overview-btn">&#21047;&#26032;&#24635;&#35272;</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>&#25209;&#37327;&#29983;&#25104;&#22320;&#22336;</h2>
+          <form id="gen-form">
+            <label>&#25968;&#37327; <input id="gen-count" type="number" min="1" max="5000" value="100" required /></label>
+            <label>&#36215;&#22987;&#32034;&#24341;&#65288;&#21487;&#31354;&#65289; <input id="gen-start" type="number" min="1" /></label>
+            <label>&#26631;&#31614;&#21069;&#32512;&#65288;&#21487;&#31354;&#65289; <input id="gen-tag" placeholder="" /></label>
+            <button type="submit">&#29983;&#25104;&#22320;&#22336;</button>
+          </form>
+          <pre id="gen-result" class="log-output" data-log-title="&#29983;&#25104;&#26085;&#24535;"></pre>
+        </section>
+
+        <section class="card wide">
+          <h2>&#22320;&#22336;&#21015;&#34920;</h2>
+          <section class="import-box">
+            <div class="import-box-head">
+              <h3>&#23548;&#20837;&#31169;&#38053;</h3>
+              <span id="import-line-count" class="import-line-count">&#24050;&#36755;&#20837; 0 &#34892;</span>
+            </div>
+            <p class="hint">&#35268;&#21017;&#65306;&#27599;&#34892;&#19968;&#20010; 64 &#20301;&#21313;&#20845;&#36827;&#21046;&#31169;&#38053;&#65292;&#25903;&#25345;&#25209;&#37327;&#31896;&#36148;&#12290;</p>
+            <textarea id="import-pairs" rows="6" placeholder="0123abcdef...&#65288;64&#20301;16&#36827;&#21046;&#31169;&#38053;&#65289;"></textarea>
+            <div class="import-actions">
+              <input id="import-tag-prefix" placeholder="&#23548;&#20837;&#26631;&#31614;&#21069;&#32512;&#65288;&#21487;&#31354;&#65289;" />
+              <button id="import-addresses-btn" type="button">&#24320;&#22987;&#23548;&#20837;</button>
+              <button id="clear-import-btn" type="button" class="btn-secondary">&#28165;&#31354;&#36755;&#20837;</button>
+            </div>
+          </section>
+          <div class="row toolbar">
+            <button id="refresh-addresses-btn">&#21047;&#26032;&#22320;&#22336;</button>
+            <button id="export-all-addresses-btn">&#23548;&#20986;&#20840;&#37096;&#22320;&#22336; TXT</button>
+            <button id="export-all-keys-btn">&#23548;&#20986;&#20840;&#37096;&#31169;&#38053; Excel</button>
+            <button id="delete-selected-btn">&#21024;&#38500;&#21246;&#36873;&#22320;&#22336;</button>
+          </div>
+          <p class="hint">&#27880;&#24847;&#65306;&#31169;&#38053;&#26497;&#20854;&#25935;&#24863;&#65292;&#35831;&#22949;&#21892;&#20445;&#31649;&#23548;&#20986;&#25991;&#20214;&#12290;</p>
+          <div class="table-wrap">
+            <table class="addresses-table">
+              <colgroup>
+                <col style="width: 44px;" />
+                <col style="width: 72px;" />
+                <col style="width: 360px;" />
+                <col style="width: 120px;" />
+                <col style="width: 120px;" />
+                <col style="width: 92px;" />
+                <col style="width: 92px;" />
+                <col style="width: 190px;" />
+                <col style="width: 98px;" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th class="checkbox-cell"><input id="select-all-current" type="checkbox" /></th>
+                  <th>&#32034;&#24341;</th>
+                  <th class="addr-col">&#22320;&#22336;</th>
+                  <th class="num-col">TRX</th>
+                  <th class="num-col">USDT</th>
+                  <th class="num-col">&#33021;&#37327;</th>
+                  <th class="num-col">&#24102;&#23485;</th>
+                  <th>&#26631;&#31614;</th>
+                  <th>&#25805;&#20316;</th>
+                </tr>
+              </thead>
+              <tbody id="addresses-body"></tbody>
+            </table>
+          </div>
+          <div class="pagination" id="address-pagination">
+            <button id="prev-page-btn" type="button">&lt; &#19978;&#19968;&#39029;</button>
+            <span id="page-info"></span>
+            <button id="next-page-btn" type="button">&#19979;&#19968;&#39029; &gt;</button>
+            <label>&#27599;&#39029;
+              <select id="page-size-select">
+                <option value="20">20</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+              </select>
+            </label>
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>&#31995;&#32479;&#26085;&#24535;</h2>
+      <pre id="log-box" class="log-output" data-log-title="&#31995;&#32479;&#26085;&#24535;"></pre>
+    </section>
+  </main>
+
+  <script src="/static/app.js?v=20260413-tablefix-v24"></script>
+</body>
+</html>
